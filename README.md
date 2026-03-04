@@ -22,17 +22,18 @@ Make sure these are installed in your computer:
 
 ## Steps
 ## 1. CLONE THIS REPO AND INSTALL DEPENDENCIES
-
-copy:
+Open Terminal/Bash, copy and enter:
+```bash
 git clone https://github.com/violetsareblue97/Libraria.git
 cd libraria
+```
 
-copy:
+Make sure your Terminal/Bash is inside Libraria root folder, and then copy and enter:
 ```bash
 npm install
 ```
 ## 2. ENIRONMENT VARIABLE FILES
-copy:
+copy and enter:
 ```bash
 cp .env.example .env.local
 ```
@@ -47,13 +48,13 @@ Get these credentials in -> Supabase Dashboard -> Project Settings -> API KEY
 (MAKE NEW PROJECT IN SUPABASE FIRST)
 
 ## 3. DATABASE SETUP
-1. Find supabase/schema.sql, in this project, and copy
+1. Find Supabase/schema.sql, copy all the content inside the file (this file contains all the SQL command
 2. Open your Supabase project dashboard
 3. Open 'SQL Editor'
 4. Paste the SQL command from schema.sql, then click run.
 
 ## 4. Run Development Server
-Open Git Bash inside your root folder
+Open Bash inside your root folder
 copy and enter:
 ```bash
 npm run dev
