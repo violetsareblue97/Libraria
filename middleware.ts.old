@@ -1,0 +1,75 @@
+// middleware.ts
+import { createServerClient } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
+
+const PROTECTED_ROUTES = ["/dashboard", "/admin"];
+const AUTH_ONLY_ROUTES  = ["/auth"];
+
+export async function middleware(request: NextRequest) {
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  })
+
+  // 1. Inisialisasi Supabase Client (Pengganti createMiddlewareSupabaseClient)
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          response = NextResponse.next({
+            request: { headers: request.headers },
+          })
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          )
+        },
+      },
+    }
+  )
+
+  // 2. Cek Session
+  const { data: { session } } = await supabase.auth.getSession();
+  const path = request.nextUrl.pathname;
+
+  const isProtected = PROTECTED_ROUTES.some(r => path.startsWith(r));
+  const isAuthOnly  = AUTH_ONLY_ROUTES.some(r => path.startsWith(r));
+
+  // 3. Logika Redirect: Belum login mencoba akses route terproteksi
+  if (isProtected && !session) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth";
+    url.searchParams.set("redirect", path);
+    return NextResponse.redirect(url);
+  }
+
+  // 4. Logika Redirect: Sudah login mencoba akses halaman /auth
+  if (isAuthOnly && session) {
+    // Ambil data profile dari Supabase
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", session.user.id)
+      .single();
+
+    const url = request.nextUrl.clone();
+    url.pathname = profile?.role === "admin" ? "/admin" : "/dashboard";
+    return NextResponse.redirect(url);
+  }
+
+  return response;
+}
+
+export const config = {
+  matcher: [
+    "/dashboard/:path*",
+    "/admin/:path*",
+    "/auth",
+  ],
+};
