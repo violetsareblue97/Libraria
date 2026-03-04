@@ -91,7 +91,8 @@ function ActiveLoanCard({ trx, onClick }: { trx: Transaction; onClick: () => voi
   );
 }
 
-// ---- MAIN PAGE ----
+
+{/*MAIN PAGE*/}
 
 export default function Dashboard() {
   const router = useRouter();
@@ -171,13 +172,13 @@ export default function Dashboard() {
     }
   }
 
-  // these are already filtered (no "returned" status) from the query
+  // filter active and overdue transactions
   const active  = transactions;
   const overdue = active.filter(t => daysLeft(t.due_date) < 0);
 
   if (authLoading) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+      <div style={{ display: "flex", backgroundColor: "#0f172a",justifyContent: "center", alignItems: "center", height: "100vh" }}>
         <Loader2 size={32} color="#14b8a6" style={{ animation: "spin 1s linear infinite" }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
@@ -185,7 +186,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div style={{ padding: "32px 36px", width: "100%" }}>
+    <div style={{ padding: "32px 36px", width: "100%", backgroundColor: "#0f172a" }}>
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
 
       {/* greeting */}
@@ -195,16 +196,47 @@ export default function Dashboard() {
 
       {/* summary cards */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12, marginBottom: 32 }}>
-        {[
-          { label: "Currently Borrowed", val: active.length,  icon: <BookMarked size={16} />, col: "#5eead4" },
-          { label: "Overdue", val: overdue.length, icon: <AlertTriangle size={16} />, col: overdue.length > 0 ? "#ef4444" : "rgba(255,255,255,0.2)" },
-        ].map(s => (
-          <div key={s.label} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 12, padding: 18 }}>
-            <div style={{ color: s.col, marginBottom: 8 }}>{s.icon}</div>
-            <div style={{ fontSize: 30, fontFamily: "var(--font-dm-sans), sans-serif", color: "white", fontWeight: 300, marginBottom: 2 }}>{s.val}</div>
-            <div style={{ color: "white", fontSize: 16, fontFamily: "var(--font-dm-sans), sans-serif" }}>{s.label}</div>
+        {/* Card 1: Currently Borrowed */}
+        <div style={{ 
+          background: "#0f172a", 
+          border: "1px solid rgba(255,255,255,0.07)", 
+          padding: 18, 
+          position: "relative" 
+        }}>
+          <div style={{ fontSize: 30, fontFamily: "var(--font-dm-sans), sans-serif", color: "white", fontWeight: 300, marginBottom: 2 }}>
+            {active.length}
           </div>
-        ))}
+          <div style={{ color: "white", fontSize: 16, fontFamily: "var(--font-dm-sans), sans-serif" }}>
+            Currently Borrowed
+          </div>
+        </div>
+
+        {/* Card 2: Overdue*/}
+        <div style={{ 
+          background: "#0f172a", 
+          border: "1px solid rgba(255,255,255,0.07)", 
+          padding: 18, 
+          position: "relative",
+          overflow: "hidden"
+        }}>
+
+          <div style={{ 
+            position: "absolute", 
+            top: 25, 
+            right: 12, 
+            color: overdue.length > 0 ? "#ef4444" : "rgba(255,255,255,0.2)",
+            opacity: 0.8 
+          }}>
+            <AlertTriangle size={50} strokeWidth={1} />
+          </div>
+
+          <div style={{ fontSize: 30, fontFamily: "var(--font-dm-sans), sans-serif", color: "white", fontWeight: 300, marginBottom: 2 }}>
+            {overdue.length}
+          </div>
+          <div style={{ color: "white", fontSize: 16, fontFamily: "var(--font-dm-sans), sans-serif" }}>
+            Overdue
+          </div>
+        </div>
       </div>
 
       {/* loan list or empty state */}
@@ -215,7 +247,7 @@ export default function Dashboard() {
       ) : active.length === 0 ? (
         <div style={{ textAlign: "center", padding: "60px 0", background: "rgba(255,255,255,0.02)", borderRadius: 16 }}>
           <BookMarked size={32} color="rgba(255,255,255,0.1)" style={{ margin: "0 auto 12px", display: "block" }} />
-          <p style={{ color: "rgba(255,255,255,0.3)", marginBottom: 12 }}>Tidak ada buku yang sedang dipinjam.</p>
+          <p style={{ color: "rgba(255,255,255,0.3)", marginBottom: 12 }}>You have no books currently borrowed.</p>
           <a href="/katalog" style={{ color: "#5eead4", fontSize: 13, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4 }}>
             Cari Buku <ArrowRight size={12} />
           </a>

@@ -11,7 +11,8 @@ body {
   height: 100%;
   background-color: #0a1228b3;
   color: white;
-  /* smoother text rendering on mac/webkit */
+
+  /* for smoother font rendering */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
