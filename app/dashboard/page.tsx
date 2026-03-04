@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { BookMarked, AlertTriangle, Clock, RotateCcw, Loader2, ArrowRight, X, CheckCircle } from "lucide-react";
+import { BookMarked, AlertTriangle, Clock, RotateCcw, Loader2, ArrowRight, X, CheckCircle, MousePointerClick } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import type { Transaction } from "@/lib/types/open-library";
@@ -246,10 +246,9 @@ export default function Dashboard() {
         </div>
       ) : active.length === 0 ? (
         <div style={{ textAlign: "center", padding: "60px 0", background: "rgba(255,255,255,0.02)", borderRadius: 16 }}>
-          <BookMarked size={32} color="rgba(255,255,255,0.1)" style={{ margin: "0 auto 12px", display: "block" }} />
-          <p style={{ color: "rgba(255,255,255,0.3)", marginBottom: 12 }}>You have no books currently borrowed.</p>
+          <p style={{ fontSize: 18, color: "rgb(255, 255, 255)", marginBottom: 5 }}>You have not borrowed any books.</p>
           <a href="/katalog" style={{ color: "#5eead4", fontSize: 13, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4 }}>
-            Cari Buku <ArrowRight size={12} />
+          Click here to find some interesting books <MousePointerClick size={13} />
           </a>
         </div>
       ) : (

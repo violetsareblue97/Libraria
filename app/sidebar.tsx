@@ -56,7 +56,7 @@ export default function Sidebar() {
         alignItems: "center",
         gap: 12
       }}>
-        {/* avatar placeholder */}
+        {/* avatar */}
         <div style={{ 
           width: 36, 
           height: 36, 
@@ -115,16 +115,16 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* logout at the bottom */}
+      {/*logout*/}
       <div style={{ padding: "0 12px" }}>
         <button onClick={async () => { await signOut(); router.push("/"); }}
           style={{ 
             width: "100%", display: "flex", alignItems: "center", gap: 10, 
             padding: "10px 12px", borderRadius: 9, border: "none", 
             background: "rgba(239,68,68,0.06)", color: "rgba(239,68,68,0.7)", 
-            cursor: "pointer", fontSize: 14 
+            cursor: "pointer", fontSize: 14, fontWeight: 500, 
           }}>
-          <LogOut size={20}/> Keluar
+          <LogOut size={20}/> Log Out
         </button>
       </div>
     </aside>
