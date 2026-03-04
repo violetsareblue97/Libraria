@@ -48,7 +48,7 @@ Get these credentials in -> Supabase Dashboard -> Project Settings -> API KEY
 (MAKE NEW PROJECT IN SUPABASE FIRST)
 
 ## 3. DATABASE SETUP
-1. Find Supabase/schema.sql, copy all the content inside the file (this file contains all the SQL command
+1. Find Supabase/schema.sql, copy all the content inside the file (this file contains all the SQL command)
 2. Open your Supabase project dashboard
 3. Open 'SQL Editor'
 4. Paste the SQL command from schema.sql, then click run.

@@ -1,15 +1,14 @@
-// proxy.ts
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-// Pastikan menggunakan 'export default' agar Next.js mengenalinya sebagai entry point proxy
-export default async function proxy(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: {
       headers: request.headers,
     },
   })
 
+  // create supabase client that can read/write cookies in the request
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -43,12 +42,12 @@ export default async function proxy(request: NextRequest) {
   const { data: { session } } = await supabase.auth.getSession()
   const path = request.nextUrl.pathname
 
-  // Daftar rute yang harus login
+  // routes that require login
   const PROTECTED_ROUTES = ["/dashboard", "/admin", "/katalog"];
   const isProtected = PROTECTED_ROUTES.some(r => path.startsWith(r));
   const isAuthOnly = path.startsWith("/auth");
 
-  // Logika Proteksi: Jika belum login dan akses rute terproteksi
+  // redirect to login if user tries to access protected page without session
   if (isProtected && !session) {
     const url = request.nextUrl.clone()
     url.pathname = "/auth"
@@ -56,7 +55,7 @@ export default async function proxy(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // Logika Auth: Jika sudah login tapi akses halaman /auth
+  // if already logged in and tries to visit /auth, redirect to dashboard
   if (isAuthOnly && session) {
     const { data: profile } = await supabase
       .from("profiles")
@@ -72,7 +71,7 @@ export default async function proxy(request: NextRequest) {
   return response
 }
 
-// Konfigurasi Matcher tetap diekspor secara terpisah
+// only run middleware on these routes
 export const config = {
   matcher: [
     "/dashboard/:path*",

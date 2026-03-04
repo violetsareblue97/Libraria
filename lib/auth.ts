@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./supabase";
 
+// custom hook - handles session state and profile fetching
+// used in most pages to get current user info
 export function useAuth() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser]       = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Ambil sesi awal
+    // get current session on first load
     supabase.auth.getSession().then(({ data: { session } }) => {
       handleUser(session?.user ?? null);
     });
 
-    // Pantau perubahan auth
+    // listen for login/logout events
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         handleUser(session?.user ?? null);
@@ -34,14 +36,15 @@ export function useAuth() {
 
     setUser(currentUser);
     
-    // Ambil profil dari tabel 'profiles'
+    // get the user's profile from the profiles table
     let { data: prof, error } = await supabase
       .from("profiles")
       .select("*")
       .eq("id", currentUser.id)
       .maybeSingle();
 
-    // AUTO-CREATE: Jika profil belum ada di tabel, buatkan otomatis
+    // if profile doesnt exist yet, create one automatically
+    // this handles cases where user signed up but profile wasnt created
     if (!prof && !error) {
       const { data: newProf } = await supabase
         .from("profiles")
@@ -49,7 +52,7 @@ export function useAuth() {
           id: currentUser.id,
           full_name: currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0],
           email: currentUser.email,
-          role: "member" // default role
+          role: "member"
         })
         .select()
         .single();

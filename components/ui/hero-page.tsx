@@ -124,7 +124,7 @@ export default function LibrariaHeroPage() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "auto",
           minHeight: "calc(100vh - 90px)",
           padding: "32px 24px 96px",
           textAlign: "center",
@@ -136,12 +136,12 @@ export default function LibrariaHeroPage() {
           <h1
             style={{
               color: "white",
-              fontFamily: "Georgia, 'Times New Roman', serif",
+              fontFamily: "var(--font-libre-baskerville), serif",
               fontSize: "clamp(42px, 8vw, 88px)",
               fontWeight: 300,
               lineHeight: 1.05,
-              margin: "0 0 24px",
-              textShadow: "0 2px 40px rgba(0,0,0,0.5)",
+              marginTop: "60px",
+              textShadow: "0 10px 40px #00000080",
             }}
           >
             Libraria{" "}
@@ -156,21 +156,6 @@ export default function LibrariaHeroPage() {
             > Digital Library
             </span>
           </h1>
-
-          {/* Subheadline */}
-          <p
-            style={{
-              color: "rgba(255,255,255,0.55)",
-              fontSize: "clamp(15px, 2.5vw, 19px)",
-              fontWeight: 300,
-              lineHeight: 1.7,
-              maxWidth: "600px",
-              margin: "0 auto 40px",
-            }}
-          >
-            Find your next favorite read in our collection.
-          </p>
-
           {/* CTA Buttons */}
           <div
             style={{
@@ -178,7 +163,7 @@ export default function LibrariaHeroPage() {
               gap: "12px",
               justifyContent: "center",
               flexWrap: "wrap",
-              marginBottom: "48px",
+              marginTop: "60px",
             }}
           >
             <button
@@ -190,10 +175,10 @@ export default function LibrariaHeroPage() {
                 gap: "8px",
                 padding: "14px 32px",
                 backgroundColor: "#14b8a6",
-                borderRadius: "999px",
+                borderRadius: "50px",
+                border: "4px solid transparent",
                 color: "white",
-                textDecoration: "none",
-                fontSize: "14px",
+                fontSize: "20px",
                 fontWeight: 500,
                 transition: "all 0.2s",
                 cursor: authLoading ? "not-allowed" : "pointer",
@@ -210,39 +195,8 @@ export default function LibrariaHeroPage() {
                 (e.currentTarget as HTMLElement).style.transform = "scale(1)";
               }}
             >
-              {user ? "Dashboard" : "Login"}<ArrowRight size={15} />
+              {user ? "Dashboard" : "Get Started"}<ArrowRight size={22} />
             </button>
-            <a
-              href="/auth"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "14px 32px",
-                backgroundColor: "rgba(255,255,255,0.07)",
-                border: "1px solid rgba(255,255,255,0.15)",
-                borderRadius: "999px",
-                color: "rgba(255,255,255,0.85)",
-                textDecoration: "none",
-                fontSize: "14px",
-                fontWeight: 500,
-                backdropFilter: "blur(8px)",
-                transition: "all 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.backgroundColor =
-                  "rgba(255,255,255,0.12)";
-                (e.currentTarget as HTMLElement).style.color = "white";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.backgroundColor =
-                  "rgba(255,255,255,0.07)";
-                (e.currentTarget as HTMLElement).style.color =
-                  "rgba(255,255,255,0.85)";
-              }}
-            >
-            Register
-                  </a>
                 </div>
               </div>
             </section>

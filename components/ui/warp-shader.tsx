@@ -26,10 +26,10 @@ export default function WarpShaderBackground() {
         rotation={0}
         speed={0.6}
         colors={[
-          "hsl(220, 60%, 8%)",
-          "hsl(195, 80%, 18%)",
-          "hsl(210, 40%, 14%)",
-          "hsl(185, 60%, 22%)",
+          "#081021",
+          "#094053",
+          "#152432",
+          "#16545a",
         ]}
       />
     </div>
